@@ -1,0 +1,56 @@
+.header {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+}
+/* logo */
+
+.logo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    padding: 0.35rem 0.25rem;
+}
+
+.logoImg {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+}
+
+.logoText {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 400;
+    font-size: 2rem;
+    position: relative;
+    /*margin-top: 0.13em;*/
+}
+
+.logoText .top {
+    font-size: .325em;
+    left: 1em;
+    position: absolute;
+    color: var(--secondary-text-color);
+    margin-top: -0.5em;
+}
+
+/* nav */
+
+.nav {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.navIcon {
+    display: grid;
+    place-content: center center;
+}

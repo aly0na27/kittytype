@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500&display=swap');
+:root {
+  --background-color: #f8bbd0;
+  --primary-color: #f06292;
+  --secondary-color: #ec407a;
+  --primary-text-color: #3d393a;
+  --secondary-text-color: #86455b;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +14,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
 }
 
 code {
