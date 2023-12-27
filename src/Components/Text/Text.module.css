@@ -1,0 +1,21 @@
+.words {
+    display: flex;
+    gap: 1rem;
+}
+.word {
+    display: inline-block;
+    /*white-space: nowrap;*/
+}
+
+.letter {
+    display: inline-block;
+    color: var(--secondary-text-color)
+}
+
+.letter.error {
+    color: red
+}
+
+.letter.okey {
+    color: var(--primary-text-color)
+}
