@@ -4,71 +4,69 @@ import styles from "./Text.module.css"
 
 const Text: React.FC = () => {
     const text = ["server", "bebebe", "hello", "cat", "never", "never", "never", "never", "never", "never", "never", "thing", "will", "never", "ever", "almost"]
-    const [typedText, setTypedText] = useState("")
-    const [pointerTypedWord, setPointerWord] = useState(0)
-    const [pointerTypedLetter, setPointerLetter] = useState(0)
-    const [isEndWord, setIsEndWord] = useState(false)
+    const [typedText, setTypedText] = useState<string[]>([])
+    const [currWord, setCurrWord] = useState<{position: number, word: string}>({position: 0, word: ''})
+    const [currLetter, setCurrLetter] = useState(0)
 
-    const onChangeInput = (e: React.FormEvent<HTMLInputElement>) => {
-        if (typedText.length > e.currentTarget.value.length) {
-            if (typedText[typedText.length - 1] !== ' ') {
-                if (isEndWord) {
-                    //стираем только тогда, когда prev word wrong
-                    if (typedText.split(' ')[pointerTypedWord] !== text[pointerTypedWord]) {
-                        setPointerLetter(text[pointerTypedWord].length-1)
-                        setPointerWord(pointerTypedWord - 1 )
-                    }
-
-                    // setPointerLetter(pointerTypedLetter - 1)
-                    setIsEndWord(false)
-                } else {
-                    setPointerLetter(pointerTypedLetter - 1)
-                }
-            } else {
-                debugger
-
-                setIsEndWord(true)
-            }
+    const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.value[e.currentTarget.value.length - 1] === ' ') {
+            setTypedText([...typedText, e.currentTarget.value.slice(0, e.currentTarget.value.length - 1)])
+            e.currentTarget.value = ''
+            setCurrWord({position: currWord.position + 1, word: ''})
+            setCurrLetter(0)
         } else {
-            setPointerLetter(pointerTypedLetter + 1)
-            if (e.currentTarget.value[e.currentTarget.value.length - 1] === ' ') {
-                setPointerWord(pointerTypedWord + 1)
-                setPointerLetter(0)
+            setCurrWord({...currWord, word: e.currentTarget.value})
+            if (e.currentTarget.value.length > currWord.word.length) {
+                setCurrLetter(currLetter + 1)
+            }
+
+        }
+    }
+
+    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Backspace') {
+            if (currLetter !== 0) {
+                setCurrLetter(currLetter - 1)
+            } else {
+                if (typedText[typedText.length - 1] === text[currWord.position - 1]) {
+                    setCurrLetter(0)
+                } else {
+                    e.preventDefault()
+                    setCurrWord({position: currWord.position - 1, word: typedText[typedText.length - 1]})
+                    setCurrLetter(typedText[typedText.length - 1].length)
+                    setTypedText(typedText.slice(0, typedText.length-1))
+                }
             }
         }
-        setTypedText(e.currentTarget.value)
     }
 
     return (
         <>
             <div className={styles.words}>
                 {
-                    text.map((w, index) => <Word text={text} indexWord={index} typedText={typedText} word={w + " "}
-                                                 pointer={pointerTypedWord} pointerLetter={pointerTypedLetter}/>)
+                    text.map((w, index) => <Word text={text} indexWord={index} typedText={typedText}
+                                                 word={w + " "} currWord={currWord} currLetter={currLetter}/>)
                 }
             </div>
-            <input type={"text"} value={typedText} onChange={onChangeInput}/>
+            <input type={"text"} value={currWord.word} onChange={onChangeInput} onKeyDown={onKeyDownHandler}/>
             <div>
-                {typedText}
+                {typedText.map(w => <p>{w}</p>)}
             </div>
         </>
     )
 }
 
 const Word: React.FC<{
-    word: string,
-    typedText: string,
-    indexWord: number,
-    text: Array<string>,
-    pointer: number,
-    pointerLetter: number
-}> = ({text, word, typedText, indexWord, pointer, pointerLetter}) => {
+    word: string, typedText: string[],
+    indexWord: number, text: string[],
+    currWord: {position: number, word: string}, currLetter: number,
+}> = ({text, word, typedText, indexWord, currWord, currLetter}) => {
     const wordArray: Array<string> = word.split("")
     return (
         <div className={styles.word}>
             {
                 wordArray.map((l, i) => <Letter text={text} indexWord={indexWord} indexLetter={i} typedText={typedText}
-                                                letter={l} pointer={pointer} pointerLetter={pointerLetter}/>)
+                                                letter={l} currWord={currWord} currLetter={currLetter} word={word}/>)
             }
         </div>
     )
@@ -80,44 +78,28 @@ enum ColorLetter {
     Red,
     Ordinary
 }
+
 const Letter: React.FC<{
-    letter: string,
-    typedText: string,
-    indexWord: number,
-    indexLetter: number,
-    text: Array<string>,
-    pointer: number,
-    pointerLetter: number
-}> = ({text, letter, typedText, indexWord, indexLetter, pointer, pointerLetter}) => {
-
-    let typedTextArray = typedText.split(' ')
-
-
+    letter: string, typedText: string[], indexWord: number,
+    indexLetter: number, text: string[], currWord: {position: number, word: string}, currLetter: number, word: string
+}> = ({text, letter, typedText, indexWord, indexLetter, currWord, currLetter, word}) => {
     function compareWords(): ColorLetter {
 
-        if (indexWord < pointer) {
-            if (typedTextArray[indexWord][indexLetter] === text[indexWord][indexLetter]) {
-                //green color
+        if (indexWord < currWord.position) {
+            if (typedText[indexWord][indexLetter] === text[indexWord][indexLetter]) {
                 return ColorLetter.Green
             } else {
-                //red color
                 return ColorLetter.Red
             }
-        } else if (indexWord > pointer) {
-            // debugger
-            // ordinary color
+        } else if (indexWord > currWord.position) {
             return ColorLetter.Ordinary
         } else {
-            // debugger
-            if (pointerLetter <= indexLetter) {
-                //ordinary color
+            if (currLetter <= indexLetter) {
                 return ColorLetter.Ordinary
-            } else if (pointerLetter > indexLetter) {
-                if (typedTextArray[indexWord][indexLetter] === text[indexWord][indexLetter]) {
-                    /// green
+            } else if (currLetter > indexLetter) {
+                if (currWord.word[indexLetter] === text[currWord.position][indexLetter]) {
                     return ColorLetter.Green
                 } else {
-                    // red
                     return ColorLetter.Red
                 }
             }

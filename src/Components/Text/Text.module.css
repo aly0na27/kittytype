@@ -10,7 +10,8 @@
 
 .letter {
     display: inline-block;
-    color: var(--secondary-text-color)
+    color: var(--secondary-text-color);
+    font-size: 2rem
 }
 
 .letter.error {
@@ -19,5 +20,5 @@
 
 .letter.okey {
     /*color: var(--primary-text-color)*/
-    color: lawngreen;
+    color: #5af339;
 }
