@@ -29,35 +29,35 @@ const Text: React.FC = () => {
     const [currLetter, setCurrLetter] = useState(0)
 
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.currentTarget.value[e.currentTarget.value.length - 1] === ' ') {
-            setTypedText([...typedText, e.currentTarget.value.slice(0, e.currentTarget.value.length - 1)])
+        let inputValue = e.currentTarget.value
+        if (inputValue[inputValue.length - 1] === ' ') {
+            setTypedText([...typedText, inputValue.slice(0, inputValue.length - 1)])
             setCurrWord({position: currWord.position + 1, word: ''})
             setCurrLetter(0)
-            e.currentTarget.value = ''
+            inputValue = ''
             return;
         }
-        setCurrWord({...currWord, word: e.currentTarget.value})
-        if (e.currentTarget.value.length > currWord.word.length) {
+        setCurrWord({...currWord, word: inputValue})
+        if (inputValue.length > currWord.word.length) {
             setCurrLetter(currLetter + 1)
         }
     }
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLElement>) => {
-        if (e.key === 'Backspace') {
-            if (currLetter !== 0) {
-                setCurrLetter(currLetter - 1)
-                return;
-            }
-            if (typedText[typedText.length - 1] === text[currWord.position - 1]) {
-                setCurrLetter(0)
-                return;
-            }
-            e.preventDefault()
-            setCurrWord({position: currWord.position - 1, word: typedText[typedText.length - 1]})
-            setCurrLetter(typedText[typedText.length - 1].length)
-            setTypedText(typedText.slice(0, typedText.length - 1))
-        }
+        if (e.key !== 'Backspace') return;
 
+        if (currLetter !== 0) {
+            setCurrLetter(currLetter - 1)
+            return;
+        }
+        if (typedText[typedText.length - 1] === text[currWord.position - 1]) {
+            setCurrLetter(0)
+            return;
+        }
+        e.preventDefault()
+        setCurrWord({position: currWord.position - 1, word: typedText[typedText.length - 1]})
+        setCurrLetter(typedText[typedText.length - 1].length)
+        setTypedText(typedText.slice(0, typedText.length - 1))
     }
 
     const checkWordState = (index: number): wordState => {
@@ -84,7 +84,6 @@ const Text: React.FC = () => {
 
 
 const Word: React.FC<WordPropsType> = memo(({state, ourWord, expectedWord, indexLetter}) => {
-    // console.log("Rerender word")
     const wordArray: Array<string> = expectedWord.split("")
 
     return (
@@ -112,7 +111,6 @@ const Word: React.FC<WordPropsType> = memo(({state, ourWord, expectedWord, index
 
 
 const Letter: React.FC<{ color: ColorLetter, letter: string }> = memo(({letter, color}) => {
-    // console.log("Rerender letter")
     return (
         <div
             className={styles.letter + ' ' + (color === ColorLetter.Ordinary ? '' : color === ColorLetter.Red ? styles.error : styles.okey)}>
