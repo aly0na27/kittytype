@@ -1,122 +1,74 @@
-import React, {memo, useState} from "react";
-import styles from "./Text.module.css"
+import React, {useState} from "react";
+import styles from "../../styles/Text.module.css"
 import {faker} from "@faker-js/faker"
+import {wordState} from '../../types/types';
+import Word from "./Word";
 
-let text = faker.random.words(10).toLowerCase().split(" ")
-
-enum wordState {
-    expect,
-    active,
-    typed
-}
-
-enum ColorLetter {
-    Green,
-    Red,
-    Ordinary
-}
-
-type WordPropsType = {
-    state: wordState,
-    expectedWord: string,
-    ourWord: string | null,
-    indexLetter: number | null
-}
+let text = (faker.random.words(2) + ' jfvdf').toLowerCase().split(" ")
 
 const Text: React.FC = () => {
     const [typedText, setTypedText] = useState<string[]>([])
-    const [currWord, setCurrWord] = useState<{ position: number, word: string }>({position: 0, word: ''})
+    const [userWord, setUserWord] = useState<{ position: number, word: string }>({position: 0, word: ''})
     const [currLetter, setCurrLetter] = useState(0)
+    const [caret, setCaret] = useState(0)
 
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         let inputValue = e.currentTarget.value
         if (inputValue[inputValue.length - 1] === ' ') {
             setTypedText([...typedText, inputValue.slice(0, inputValue.length - 1)])
-            setCurrWord({position: currWord.position + 1, word: ''})
+            setUserWord({position: userWord.position + 1, word: ''})
             setCurrLetter(0)
             inputValue = ''
             return;
         }
-        setCurrWord({...currWord, word: inputValue})
-        if (inputValue.length > currWord.word.length) {
+        setUserWord({...userWord, word: inputValue})
+        setCaret(caret + 1)
+        if (inputValue.length > userWord.word.length) {
             setCurrLetter(currLetter + 1)
         }
     }
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'ArrowLeft' || e.key === "ArrowRight" || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault()
+            return;
+        }
         if (e.key !== 'Backspace') return;
 
         if (currLetter !== 0) {
             setCurrLetter(currLetter - 1)
+            setCaret(caret - 1)
             return;
         }
-        if (typedText[typedText.length - 1] === text[currWord.position - 1]) {
+        if (typedText[typedText.length - 1] === text[userWord.position - 1]) {
             setCurrLetter(0)
             return;
         }
         e.preventDefault()
-        setCurrWord({position: currWord.position - 1, word: typedText[typedText.length - 1]})
+        setUserWord({position: userWord.position - 1, word: typedText[typedText.length - 1]})
+        setCaret(caret - 1)
         setCurrLetter(typedText[typedText.length - 1].length)
         setTypedText(typedText.slice(0, typedText.length - 1))
     }
 
     const checkWordState = (index: number): wordState => {
-        return (index < currWord.position) ? wordState.typed : (index > currWord.position) ? wordState.expect : wordState.active
+        return (index < userWord.position) ? wordState.typed : (index > userWord.position) ? wordState.expect : wordState.active
     }
 
-
     return (
-        <>
+        <div id={'textBox'} className={styles.textBox}>
+            <div id={"caret"} className={styles.caret}></div>
             <div className={styles.words}>
                 {
                     text.map((w, index) => <Word key={index} state={checkWordState(index)} expectedWord={text[index]}
-                                                 indexLetter={index === currWord.position ? currLetter : null}
-                                                 ourWord={index < currWord.position ? typedText[index] : index > currWord.position ? null : currWord.word}/>)
+                                                 indexLetter={index === userWord.position ? currLetter : null}
+                                                 ourWord={index < userWord.position ? typedText[index] : index > userWord.position ? null : userWord.word}/>)
                 }
             </div>
-            <input type={"text"} value={currWord.word} onChange={onChangeInput} onKeyDown={onKeyDownHandler}/>
-            {/*<div>*/}
-            {/*    {typedText.map(w => <p>{w}</p>)}*/}
-            {/*</div>*/}
-        </>
+            <input autoFocus={true} type={"text"} value={userWord.word} onChange={onChangeInput}
+                   onKeyDown={onKeyDownHandler}/>
+        </div>
     )
 }
-
-
-const Word: React.FC<WordPropsType> = memo(({state, ourWord, expectedWord, indexLetter}) => {
-    const wordArray: Array<string> = expectedWord.split("")
-
-    return (
-        <div className={styles.word}>
-            {
-                wordArray.map((l, i) => {
-                    if (state === wordState.expect) {
-                        return <Letter color={ColorLetter.Ordinary} letter={l}/>
-                    } else if (state === wordState.active) {
-                        if (Number(indexLetter) <= i) {
-                            return <Letter color={ColorLetter.Ordinary} letter={l}/>
-                        } else {
-                            return <Letter
-                                color={ourWord?.at(i) === expectedWord[i] ? ColorLetter.Green : ColorLetter.Red}
-                                letter={l}/>
-                        }
-                    }
-                    return <Letter color={ourWord?.at(i) === expectedWord[i] ? ColorLetter.Green : ColorLetter.Red}
-                                   letter={l}/>
-                })
-            }
-        </div>
-    )
-})
-
-
-const Letter: React.FC<{ color: ColorLetter, letter: string }> = memo(({letter, color}) => {
-    return (
-        <div
-            className={styles.letter + ' ' + (color === ColorLetter.Ordinary ? '' : color === ColorLetter.Red ? styles.error : styles.okey)}>
-            {letter}
-        </div>
-    )
-})
 
 export default Text

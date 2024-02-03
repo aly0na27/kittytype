@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './App.module.css';
 import Text from "./Components/Text/Text";
 import {Header} from "./Components/Header/Header";
-import {theme} from "./Theme/Theme";
+import {theme} from "./theme/theme";
 import {ThemeProvider} from "@mui/material";
 
 

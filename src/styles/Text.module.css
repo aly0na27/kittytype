@@ -1,0 +1,40 @@
+.textBox {
+    position: relative;
+}
+
+.words {
+    font-family: monospace;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.caret {
+    position: absolute;
+    width: 1em;
+    height: 0.2em;
+    background-color: #ec407a;
+    margin-top: 2.1em;
+    transition: 0.2s ease all;
+}
+
+.letter {
+    display: inline-block;
+    color: var(--secondary-text-color);
+    font-size: 2rem;
+    transition: 0.2s ease all;
+}
+
+.letter.error {
+    color: red
+}
+
+.letter.okey {
+    color: var(--primary-text-color)
+}
+
+.letter.underline {
+    color: var(--secondary-text-color);
+    text-decoration: underline red 2px;
+    transition: 0.2s ease all;
+}
