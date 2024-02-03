@@ -6,6 +6,9 @@
 
 .contentWrapper {
     display: grid;
-    gap:2rem;
-    padding: 2rem;
+    grid-auto-columns: auto 1fr auto;
+    gap: 2rem;
+    padding: 3rem;
+    min-height: 100vh;
+    align-content: space-between;
 }

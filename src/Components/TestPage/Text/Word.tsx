@@ -1,9 +1,10 @@
-import React, {memo} from "react";
-import {colorLetter, WordProps, wordState} from "../../types/types";
-import styles from "../../styles/Text.module.css";
+import React, {memo, useEffect, useState} from "react";
+import {colorLetter, WordProps, wordState} from "../../../types/types";
+import styles from "../../../styles/Text.module.css";
 import Letter from "./Letter";
 
 const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLetter}) => {
+    console.log("RErender word")
     let wordArray: string[] = expectedWord.split("")
 
     if (ourWord && expectedWord.length < ourWord.length) {
@@ -16,7 +17,7 @@ const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLett
                 wordArray.map((l, i) => {
                     if (i >= expectedWord.length) {
                         return <Letter color={colorLetter.extra_incorrect} letter={l}
-                                       isActive={ourWord ? (indexLetter === i + 1) : false}/>
+                                       isActive={ourWord ? (indexLetter === i + 1) : false} />
 
                     }
                     if (state === wordState.active) {

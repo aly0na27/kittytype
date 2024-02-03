@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import styles from "../../styles/Text.module.css"
+import React, {useEffect, useState} from "react";
+import styles from "../../../styles/Text.module.css"
 import {faker} from "@faker-js/faker"
-import {wordState} from '../../types/types';
+import {wordState} from '../../../types/types';
 import Word from "./Word";
 
 let text = (faker.random.words(10)).toLowerCase().split(" ")
@@ -15,6 +15,9 @@ const Text: React.FC = () => {
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         let inputValue = e.currentTarget.value
         if (inputValue[inputValue.length - 1] === ' ') {
+            if (inputValue.length === 1) { // If word is empty then we don't start type next word
+                return;
+            }
             setTypedText([...typedText, inputValue.slice(0, inputValue.length - 1)])
             setUserWord({position: userWord.position + 1, word: ''})
             setCurrLetter(0)

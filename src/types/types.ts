@@ -8,8 +8,9 @@ export type WordProps = {
 export type LetterProps = {
     color: colorLetter,
     letter: string,
-    isActive: boolean
+    isActive: boolean,
 }
+
 export enum wordState {
     expect,
     active,
@@ -21,4 +22,15 @@ export enum colorLetter {
     incorrect,
     based,
     extra_incorrect
+}
+
+export type TypingModeType = 'time' | 'words' | 'qoute' | 'zen' | 'custom'
+
+export type QuoteType = 'all' | 'short' | 'medium' | 'long' | 'thick'
+
+export type ResultsType = {
+    wpm: number
+    accuracy: number
+    time: number
+
 }

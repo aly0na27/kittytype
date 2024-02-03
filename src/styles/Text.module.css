@@ -2,8 +2,7 @@
     position: relative;
     width : 70%;
     left: 50%;
-    top: 6rem;
-    transform: translate(-50%, 6rem);
+    transform: translate(-50%, 0);
 }
 
 .words {
@@ -17,7 +16,7 @@
     position: absolute;
     width: 1em;
     height: 0.2em;
-    background-color: #ec407a;
+    background-color: #5a38ee;
     margin-top: 2.1em;
     transition: 0.2s ease all;
 }

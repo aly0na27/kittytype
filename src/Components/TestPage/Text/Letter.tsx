@@ -1,9 +1,10 @@
-import React, {memo, useEffect} from "react";
-import {colorLetter, LetterProps} from "../../types/types";
+import React, {memo, useEffect, useState} from "react";
+import {colorLetter, LetterProps} from "../../../types/types";
 import classNames from "classnames";
-import styles from "../../styles/Text.module.css";
+import styles from "../../../styles/Text.module.css";
 
 const Letter: React.FC<LetterProps> = memo(({letter, color, isActive}) => {
+    console.log('Rerender letter')
 
     useEffect(() => {
         const caret = document.getElementById("caret")
@@ -14,6 +15,7 @@ const Letter: React.FC<LetterProps> = memo(({letter, color, isActive}) => {
             caret.style.left = (activeLetter.getBoundingClientRect().left - textBox.getBoundingClientRect().left).toString() + 'px'
             caret.style.top = (activeLetter.getBoundingClientRect().top - textBox.getBoundingClientRect().top).toString() + 'px'
         }
+
     }, [isActive])
 
     const letterClass = classNames(styles.letter, {

@@ -1,0 +1,72 @@
+.configTestWrapper {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-around;
+    margin-bottom: 7rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: var(--primary-color);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.spacer {
+    height: 2.2rem;
+    width: 0.2rem;
+    background-color: var(--background-color);
+    border-radius: 2px;
+}
+
+.puncAndNum {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.5rem;
+    align-items: center;
+    justify-items: center;
+    /*background-color: var(--primary-color);*/
+    border-radius: 12px;
+    color: var(--secondary-text-color);
+    padding: 0 1rem;
+}
+
+.mode {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 0.5rem;
+    align-items: center;
+    justify-items: center;
+    /*background-color: var(--primary-color);*/
+    border-radius: 12px;
+    color: var(--secondary-text-color);
+    padding: 0 1rem;
+}
+
+.modeItem, .puncAndNumItem, .time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modeItem:hover, .puncAndNumItem:hover, .timeItem:hover {
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.time {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 12px;
+    color: var(--secondary-text-color);
+    padding: 0 1rem;
+}
+
+.modeItem, .timeItem, .puncAndNumItem {
+    font-weight: 500;
+}
