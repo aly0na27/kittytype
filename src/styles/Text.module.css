@@ -1,5 +1,9 @@
 .textBox {
     position: relative;
+    width : 70%;
+    left: 50%;
+    top: 6rem;
+    transform: translate(-50%, 6rem);
 }
 
 .words {

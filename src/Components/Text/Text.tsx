@@ -4,7 +4,7 @@ import {faker} from "@faker-js/faker"
 import {wordState} from '../../types/types';
 import Word from "./Word";
 
-let text = (faker.random.words(2) + ' jfvdf').toLowerCase().split(" ")
+let text = (faker.random.words(10)).toLowerCase().split(" ")
 
 const Text: React.FC = () => {
     const [typedText, setTypedText] = useState<string[]>([])
