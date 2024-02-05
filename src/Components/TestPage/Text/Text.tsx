@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from "../../../styles/Text.module.css"
 import {faker} from "@faker-js/faker"
 import {wordState} from '../../../types/types';
 import Word from "./Word";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {typingSlice} from "../../../store/reducers/TypingSlice";
 
-let text = (faker.random.words(10)).toLowerCase().split(" ")
+let text = (faker.word.words(20)).toLowerCase().split(" ")
 
 const Text: React.FC = () => {
     const [typedText, setTypedText] = useState<string[]>([])
@@ -12,13 +14,30 @@ const Text: React.FC = () => {
     const [currLetter, setCurrLetter] = useState(0)
     const [caret, setCaret] = useState(0)
 
+    const typingState = useAppSelector(state => state.typingSliceReducer.typingState)
+    const selectedTime = useAppSelector(state => state.configTestReducer.time)
+    const correctWords = useAppSelector(state => state.typingSliceReducer.correctWordCount)
+    const dispatch = useAppDispatch()
+    const setTypingState = typingSlice.actions.setTypingState
+    const setTime = typingSlice.actions.setTime
+    const setCorrectWordCount = typingSlice.actions.setCorrectWordCount
+
+
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (typingState === 'notStarted') { // dispatch в store, что мы начали печатать
+            dispatch(setTypingState('started'))
+            dispatch(setTime(selectedTime))
+        }
+
         let inputValue = e.currentTarget.value
         if (inputValue[inputValue.length - 1] === ' ') {
             if (inputValue.length === 1) { // If word is empty then we don't start type next word
                 return;
             }
-            setTypedText([...typedText, inputValue.slice(0, inputValue.length - 1)])
+            if (inputValue.slice(0 , -1) === text[userWord.position]) {
+                dispatch(setCorrectWordCount(correctWords+1))
+            }
+            setTypedText([...typedText, inputValue.slice(0, -1)])
             setUserWord({position: userWord.position + 1, word: ''})
             setCurrLetter(0)
             inputValue = ''

@@ -1,8 +1,10 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import configTestReducer from "./reducers/ConfigTestSlice";
+import configTestReducer from "./reducers/TestConfigSlice";
+import typingSliceReducer from "./reducers/TypingSlice";
 
 const rootReducer = combineReducers({
-    configTestReducer
+    configTestReducer,
+    typingSliceReducer
 })
 
 export const setupStore = () => {

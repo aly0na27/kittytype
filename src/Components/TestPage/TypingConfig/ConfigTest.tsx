@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styles from "../../../styles/TypingMode.module.css"
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -7,21 +7,23 @@ import SpellcheckRoundedIcon from '@mui/icons-material/SpellcheckRounded';
 import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import TuneIcon from '@mui/icons-material/Tune';
+import {TimeBar} from "./TimeBar";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {WordCountBar} from "./WordCountBar";
 import {TypingModeType} from "../../../types/types";
+import {testConfigSlice} from "../../../store/reducers/TestConfigSlice";
 
 
 export const ConfigTest: React.FC = () => {
-    const [typingMode, setTypingMode] = useState<TypingModeType>('time')
+    const activeMode = useAppSelector(state => state.configTestReducer.mode)
+    const dispatch = useAppDispatch()
+    const setMode = testConfigSlice.actions.setMode
 
-    const handleClick = () => {
-
+    const handleModeClick = (e: React.MouseEvent<HTMLElement>) => {
+        const mode = e.currentTarget.innerText as TypingModeType
+        dispatch(setMode(mode))
     }
 
-    const handleTimeBarClick = (event: React.MouseEvent<HTMLElement>) => {
-        const time = +event.currentTarget.innerText
-
-        debugger
-    }
 
     return (
         <div className={styles.configTestWrapper}>
@@ -35,39 +37,28 @@ export const ConfigTest: React.FC = () => {
                     </div>
                 </div>
                 <div className={styles.spacer}></div>
-                <div className={styles.mode} onClick={handleClick}>
-                    <div className={styles.modeItem}>
+                <div className={styles.mode}>
+                    <div className={styles.modeItem + ' ' + (activeMode === 'time' ? styles.active : '')} onClick={handleModeClick}>
                         <AccessTimeIcon/><span>time</span>
                     </div>
-                    <div className={styles.modeItem}>
+                    <div className={styles.modeItem + ' ' + (activeMode === 'words' ? styles.active : '')} onClick={handleModeClick}>
                         <SpellcheckRoundedIcon/>words
                     </div>
-                    <div className={styles.modeItem}>
+                    <div className={styles.modeItem + ' ' + (activeMode === 'qoute' ? styles.active : '')} onClick={handleModeClick}>
                         <FormatQuoteRoundedIcon/>quote
                     </div>
-                    <div className={styles.modeItem}>
+                    <div className={styles.modeItem + ' ' + (activeMode === 'zen' ? styles.active : '')} onClick={handleModeClick}>
                         <SelfImprovementIcon/>zen
                     </div>
-                    <div className={styles.modeItem}>
+                    <div className={styles.modeItem + ' ' + (activeMode === 'custom' ? styles.active : '')} onClick={handleModeClick}>
                         <TuneIcon/>custom
                     </div>
                 </div>
                 <div className={styles.spacer}>
                 </div>
-                <div className={styles.time} >
-                    <div className={styles.timeItem} onClick={handleTimeBarClick}>
-                        15
-                    </div>
-                    <div className={styles.timeItem} onClick={handleTimeBarClick}>
-                        30
-                    </div>
-                    <div className={styles.timeItem} onClick={handleTimeBarClick}>
-                        60
-                    </div>
-                    <div className={styles.timeItem} onClick={handleTimeBarClick}>
-                        120
-                    </div>
-                </div>
+                {
+                    activeMode === 'time' ? <TimeBar/> : <WordCountBar/>
+                }
             </div>
         </div>
     )

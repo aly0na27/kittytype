@@ -8,15 +8,21 @@ import {ConfigTest} from "./Components/TestPage/TypingConfig/ConfigTest";
 import {useAppSelector} from "./hooks/redux";
 import {TestPage} from "./Components/TestPage/TestPage";
 import {Footer} from "./Components/Footer/Footer";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {ResultPage} from "./Components/ResultPage/ResultPage";
 
 
 const App: React.FC = () => {
-    // const bebe = useAppSelector(state => state.configTestReducer.)
+    const typingState = useAppSelector(state => state.typingSliceReducer.typingState)
+
+
     return (
         <ThemeProvider theme={theme}>
             <div className={styles.contentWrapper}>
                 <Header/>
-                <TestPage/>
+                {
+                    typingState === 'completed' ? <ResultPage/> : <TestPage/>
+                }
                 <Footer/>
             </div>
         </ThemeProvider>

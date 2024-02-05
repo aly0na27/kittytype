@@ -28,9 +28,10 @@ export type TypingModeType = 'time' | 'words' | 'qoute' | 'zen' | 'custom'
 
 export type QuoteType = 'all' | 'short' | 'medium' | 'long' | 'thick'
 
+export type TypingStateType = 'notStarted' | 'started' | 'completed'
+
 export type ResultsType = {
     wpm: number
     accuracy: number
     time: number
-
 }

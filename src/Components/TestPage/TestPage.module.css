@@ -1,7 +1,5 @@
 .main {
     display: grid;
-    /*grid-auto-rows: auto 1fr;*/
-    /*align-content: space-between;*/
-    /*row-gap: 6rem;*/
+    justify-items: center;
     height: 100%;
 }
