@@ -35,3 +35,10 @@ export type ResultsType = {
     accuracy: number
     time: number
 }
+
+export type CharactersType = {
+    correct: number
+    incorrect: number
+    extra: number
+    missing: number
+}

@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo} from "react";
 import {colorLetter, WordProps, wordState} from "../../../types/types";
 import styles from "../../../styles/Text.module.css";
 import Letter from "./Letter";
@@ -25,7 +25,6 @@ const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLett
                             color={Number(indexLetter) <= i ? colorLetter.based : ourWord?.at(i) === expectedWord[i] ? colorLetter.correct : colorLetter.incorrect}
                             letter={l} isActive={i === indexLetter}/>
                     }
-
                     return <Letter
                         color={state === wordState.expect ? colorLetter.based : ourWord?.at(i) === expectedWord[i] ? colorLetter.correct : colorLetter.incorrect}
                         letter={l} isActive={false}/>

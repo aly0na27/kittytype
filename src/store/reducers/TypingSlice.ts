@@ -1,21 +1,27 @@
-import {ResultsType, TypingStateType} from "../../types/types";
+import {CharactersType, ResultsType, TypingStateType} from "../../types/types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
-
-
 
 interface TypingSliceType {
     typingState: TypingStateType
     time: number
     results: ResultsType | null
     correctWordCount: number
+    characters: CharactersType
+    typedText: string[] | null
+    text: string[]
 }
 
 const initialState: TypingSliceType = {
     typingState: 'notStarted',
     time: 0,
     results: null,
-    correctWordCount: 0
+    correctWordCount: 0,
+    characters: {
+        correct: 0, incorrect: 0, extra: 0, missing: 0
+    },
+    typedText: null,
+    // text: (faker.word.words(20)).toLowerCase().split(" ")
+    text: 'never last few many year in some fact more how because but that true false never never'.split(' ')
 }
 
 export const typingSlice = createSlice({
@@ -33,6 +39,12 @@ export const typingSlice = createSlice({
         },
         setCorrectWordCount(state: TypingSliceType, action: PayloadAction<number>) {
             state.correctWordCount = action.payload
+        },
+        setCharacters(state: TypingSliceType, action: PayloadAction<CharactersType>) {
+            state.characters = action.payload
+        },
+        setTypedText(state: TypingSliceType, action: PayloadAction<string[]>) {
+            state.typedText = action.payload
         }
     }
 })
