@@ -3,7 +3,7 @@ import {colorLetter, LetterProps} from "../../../types/types";
 import classNames from "classnames";
 import styles from "../../../styles/Text.module.css";
 
-const Letter: React.FC<LetterProps> = memo(({letter, color, isActive}) => {
+const Letter: React.FC<LetterProps> = memo(({letter, color, isActive, isSpace}) => {
     console.log('Rerender letter')
 
     useEffect(() => {
@@ -14,6 +14,9 @@ const Letter: React.FC<LetterProps> = memo(({letter, color, isActive}) => {
         if (isActive && textBox && activeLetter && caret) {
             caret.style.left = (activeLetter.getBoundingClientRect().left - textBox.getBoundingClientRect().left).toString() + 'px'
             caret.style.top = (activeLetter.getBoundingClientRect().top - textBox.getBoundingClientRect().top).toString() + 'px'
+        }
+        if (isSpace && textBox && caret) {
+            caret.style.left = (caret.getBoundingClientRect().left + +caret.offsetWidth - textBox.getBoundingClientRect().left ).toString() + 'px'
         }
     }, [isActive])
 

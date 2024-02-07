@@ -8,7 +8,7 @@ import {Input} from './Input/Input'
 // let text = (faker.word.words(20)).toLowerCase().split(" ")
 
 export const TestPage = () => {
-    const [typedText, setTypedText] = useState<string[]>([])
+    const [typedText, setTypedText] = useState<string[]>([''])
     const [userWord, setUserWord] = useState('')
     const [currLetter, setCurrLetter] = useState(0)
 

@@ -17,17 +17,17 @@ const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLett
                 wordArray.map((l, i) => {
                     if (i >= expectedWord.length) {
                         return <Letter color={colorLetter.extra_incorrect} letter={l}
-                                       isActive={ourWord ? (indexLetter === i + 1) : false} />
+                                       isActive={ourWord ? (indexLetter === i + 1) : false} isSpace={false}/>
 
                     }
                     if (state === wordState.active) {
                         return <Letter
                             color={Number(indexLetter) <= i ? colorLetter.based : ourWord?.at(i) === expectedWord[i] ? colorLetter.correct : colorLetter.incorrect}
-                            letter={l} isActive={i === indexLetter}/>
+                            letter={l} isActive={i === indexLetter} isSpace={i+1 === indexLetter}/>
                     }
                     return <Letter
                         color={state === wordState.expect ? colorLetter.based : ourWord?.at(i) === expectedWord[i] ? colorLetter.correct : colorLetter.incorrect}
-                        letter={l} isActive={false}/>
+                        letter={l} isActive={false} isSpace={false}/>
                 })
             }
         </div>

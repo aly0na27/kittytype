@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {typingSlice} from "../../../store/reducers/TypingSlice";
 
@@ -16,24 +16,46 @@ export const Input = ({text, typedText, setTypedText, userWord, setUserWord, cur
     const typingSliceActions = typingSlice.actions
     const dispatch = useAppDispatch()
 
+    useEffect(() => {
+        const activeLetter = document.getElementById('active')
+        const textBox = document.getElementById('textBox')
+
+        if (activeLetter && textBox) {
+            if ((textBox.getBoundingClientRect().top + textBox.getBoundingClientRect().height) - (activeLetter.getBoundingClientRect().top + activeLetter.getBoundingClientRect().height) < activeLetter.getBoundingClientRect().height) {
+                let it = 1
+                let s = activeLetter.parentElement?.previousElementSibling
+                while (s && s.previousElementSibling) {
+                    s = s?.previousElementSibling
+                }
+                while (s && s.nextElementSibling && (s.nextElementSibling.getBoundingClientRect().top === s.getBoundingClientRect().top)) {
+                    s = s.nextElementSibling
+                    it++
+                }
+                dispatch(typingSliceActions.generateNewTextPortion(it))
+                debugger
+            }
+        }
+    }, [currLetter]);
 
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (typingState === 'notStarted') { // dispatch в store, что мы начали печатать
             dispatch(typingSliceActions.setTypingState('started'))
             dispatch(typingSliceActions.setTime(selectedTime))
         }
-        let inputValue = e.currentTarget.value
-        if (inputValue[inputValue.length - 1] === ' ') {
-            if (inputValue.length === 1) return; // If word is empty then we don't start type next word
+        if (e.currentTarget.value[e.currentTarget.value.length - 1] === ' ') {
+            if (e.currentTarget.value.length === 1) return; // If word is empty then we don't start type next word
 
-            setTypedText([...typedText, inputValue.slice(0, -1)])
+            setTypedText([...typedText, '']) //bebe
             setUserWord('')
             setCurrLetter(0)
-            inputValue = ''
+            e.currentTarget.value = ''
             return;
         }
-        setUserWord(inputValue)
-        if (inputValue.length > userWord.length) {
+        typedText[typedText.length - 1] = e.currentTarget.value
+        setTypedText([...typedText]) //bebe
+
+        setUserWord(e.currentTarget.value)
+        if (e.currentTarget.value.length > userWord.length) {
             setCurrLetter(currLetter + 1)
         }
     }
@@ -49,13 +71,11 @@ export const Input = ({text, typedText, setTypedText, userWord, setUserWord, cur
             setCurrLetter(currLetter - 1)
             return;
         }
-        if (typedText[typedText.length - 1] === text[typedText.length - 1]) {
-            setCurrLetter(0)
-            return;
-        }
+        if (typedText[typedText.length - 2] === text[typedText.length - 2]) return;
+
         e.preventDefault()
-        setUserWord(typedText[typedText.length - 1])
-        setCurrLetter(typedText[typedText.length - 1].length)
+        setUserWord(typedText[typedText.length - 2])
+        setCurrLetter(typedText[typedText.length - 2].length)
         setTypedText(typedText.slice(0, typedText.length - 1))
     }
 

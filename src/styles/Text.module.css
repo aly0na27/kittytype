@@ -1,18 +1,22 @@
 .textBox {
     position: relative;
-    width : 70%;
+    pointer-events: none;
+    user-select: none;
+    height: 125px;
+    overflow: hidden;
 }
 
 .words {
     font-family: monospace;
     display: flex;
-    gap: 1rem;
+    row-gap: 0.7rem;
+    column-gap: 1rem;
     flex-wrap: wrap;
 }
 
 .caret {
     position: absolute;
-    width: 1em;
+    width: 0.9em;
     height: 0.2em;
     background-color: #5a38ee;
     margin-top: 2.1em;
@@ -22,7 +26,7 @@
 .letter {
     display: inline-block;
     color: var(--secondary-text-color);
-    font-size: 2rem;
+    font-size: 1.5rem;
     transition: 0.2s ease all;
 }
 

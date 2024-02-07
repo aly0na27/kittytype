@@ -5,10 +5,8 @@ import Word from "./Word";
 
 
 const Text = ({text, userWord, typedText, currLetter} : {text: string[], userWord: string, typedText: string[], currLetter: number}) => {
-
-    // userWord.position => typedText.length -1 or -2 or ''
     const checkWordState = (index: number): wordState => {
-        return (index < typedText.length) ? wordState.typed : (index > typedText.length) ? wordState.expect : wordState.active
+        return (index < typedText.length - 1) ? wordState.typed : (index > typedText.length - 1) ? wordState.expect : wordState.active
     }
 
     return (
@@ -19,8 +17,8 @@ const Text = ({text, userWord, typedText, currLetter} : {text: string[], userWor
                     text.map((w, index) => <Word key={index}
                                                  state={checkWordState(index)}
                                                  expectedWord={w}
-                                                 indexLetter={index === typedText.length ? currLetter : null}
-                                                 ourWord={index < typedText.length ? typedText[index] : index > typedText.length ? null : userWord}/>
+                                                 indexLetter={index === typedText.length - 1 ? currLetter : null}
+                                                 ourWord={index < typedText.length - 1 ? typedText[index] : index > typedText.length - 1 ? null : userWord}/>
                     )
                 }
             </div>

@@ -9,6 +9,7 @@ export type LetterProps = {
     color: colorLetter,
     letter: string,
     isActive: boolean,
+    isSpace: boolean
 }
 
 export enum wordState {

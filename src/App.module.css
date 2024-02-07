@@ -5,9 +5,11 @@
 }
 
 .contentWrapper {
+    margin: 0 auto;
+    max-width: 1200px;
     display: grid;
     grid-auto-columns: auto 1fr auto;
-    gap: 2rem;
+    /*gap: 2rem;*/
     padding: 3rem;
     min-height: 100vh;
     align-content: space-between;
