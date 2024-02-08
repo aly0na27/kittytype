@@ -1,10 +1,12 @@
 import {ConfigTest} from "./TypingConfig/ConfigTest";
 import Text from "./Text/Text";
 import styles from "./TestPage.module.css"
-import {useAppSelector} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {TimerAndLiveWpm} from "./TimerAndLiveWpm/TimerAndLiveWpm";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Input} from './Input/Input'
+import {RestartButton} from "./RestartButton/RestartButton";
+import {typingSlice} from "../../store/reducers/TypingSlice";
 
 export const TestPage = () => {
     const [typedText, setTypedText] = useState<string[]>([''])
@@ -26,6 +28,8 @@ export const TestPage = () => {
                    currLetter={currLetter} setCurrLetter={setCurrLetter}
                    activeWordRef={activeWordRef}
             />
+            <RestartButton setCurrLetter={setCurrLetter} setTypedText={setTypedText} setUserWord={setUserWord}/>
+
         </main>
     )
 }

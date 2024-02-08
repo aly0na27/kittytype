@@ -6,7 +6,6 @@ interface TypingSliceType {
     typingState: TypingStateType
     time: number
     results: ResultsType | null
-    correctWordCount: number
     characters: CharactersType
     typedText: string[] | null
     text: string[]
@@ -16,7 +15,6 @@ const initialState: TypingSliceType = {
     typingState: 'notStarted',
     time: 0,
     results: null,
-    correctWordCount: 0,
     characters: {
         correct: 0, incorrect: 0, extra: 0, missing: 0
     },
@@ -36,9 +34,6 @@ export const typingSlice = createSlice({
         },
         setTime(state: TypingSliceType, action: PayloadAction<number>) {
             state.time = action.payload
-        },
-        setCorrectWordCount(state: TypingSliceType, action: PayloadAction<number>) {
-            state.correctWordCount = action.payload
         },
         setCharacters(state: TypingSliceType, action: PayloadAction<CharactersType>) {
             state.characters = action.payload
@@ -78,6 +73,9 @@ export const typingSlice = createSlice({
         },
         generateNewTextPortion(state: TypingSliceType, action: PayloadAction<number>) {
             state.text = state.text.slice(action.payload, state.text.length).concat(faker.word.words(action.payload).split(' '))
+        },
+        generateNewText(state: TypingSliceType, action: PayloadAction) {
+            state.text = (faker.word.words(100)).toLowerCase().split(" ")
         }
     }
 })
