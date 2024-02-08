@@ -3,14 +3,15 @@ import Text from "./Text/Text";
 import styles from "./TestPage.module.css"
 import {useAppSelector} from "../../hooks/redux";
 import {TimerAndLiveWpm} from "./TimerAndLiveWpm/TimerAndLiveWpm";
-import {useState} from "react";
+import React, {useRef, useState} from "react";
 import {Input} from './Input/Input'
-// let text = (faker.word.words(20)).toLowerCase().split(" ")
 
 export const TestPage = () => {
     const [typedText, setTypedText] = useState<string[]>([''])
     const [userWord, setUserWord] = useState('')
     const [currLetter, setCurrLetter] = useState(0)
+
+    const activeWordRef = useRef<HTMLDivElement>(null)
 
     const typingState = useAppSelector(state => state.typingSliceReducer.typingState)
     const text = useAppSelector(state => state.typingSliceReducer.text)
@@ -19,10 +20,12 @@ export const TestPage = () => {
         <main className={styles.main}>
             <ConfigTest/>
             {typingState === 'started' && <TimerAndLiveWpm text={text} typedText={typedText}/>}
-            <Text text={text} userWord={userWord} typedText={typedText} currLetter={currLetter}/>
+            <Text text={text} userWord={userWord} typedText={typedText} currLetter={currLetter} activeWordRef={activeWordRef}/>
             <Input text={text} typedText={typedText} setTypedText={setTypedText}
                    userWord={userWord} setUserWord={setUserWord}
-                   currLetter={currLetter} setCurrLetter={setCurrLetter}/>
+                   currLetter={currLetter} setCurrLetter={setCurrLetter}
+                   activeWordRef={activeWordRef}
+            />
         </main>
     )
 }

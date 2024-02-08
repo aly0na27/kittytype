@@ -4,7 +4,7 @@ import {wordState} from '../../../types/types';
 import Word from "./Word";
 
 
-const Text = ({text, userWord, typedText, currLetter} : {text: string[], userWord: string, typedText: string[], currLetter: number}) => {
+const Text = ({text, userWord, typedText, currLetter, activeWordRef} : {text: string[], userWord: string, typedText: string[], currLetter: number, activeWordRef: React.RefObject<HTMLDivElement>}) => {
     const checkWordState = (index: number): wordState => {
         return (index < typedText.length - 1) ? wordState.typed : (index > typedText.length - 1) ? wordState.expect : wordState.active
     }
@@ -18,7 +18,9 @@ const Text = ({text, userWord, typedText, currLetter} : {text: string[], userWor
                                                  state={checkWordState(index)}
                                                  expectedWord={w}
                                                  indexLetter={index === typedText.length - 1 ? currLetter : null}
-                                                 ourWord={index < typedText.length - 1 ? typedText[index] : index > typedText.length - 1 ? null : userWord}/>
+                                                 ourWord={index < typedText.length - 1 ? typedText[index] : index > typedText.length - 1 ? null : userWord}
+                                                 activeWordRef={activeWordRef}
+                    />
                     )
                 }
             </div>

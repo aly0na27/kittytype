@@ -7,35 +7,14 @@ type InputProps = {
     userWord: string, setUserWord: Dispatch<SetStateAction<string>>
     currLetter: number, setCurrLetter: Dispatch<SetStateAction<number>>
     text: string[]
-
+    activeWordRef: React.RefObject<HTMLDivElement>
 }
 
-export const Input = ({text, typedText, setTypedText, userWord, setUserWord, currLetter, setCurrLetter}: InputProps) => {
+export const Input = ({text, typedText, setTypedText, userWord, setUserWord, currLetter, setCurrLetter, activeWordRef}: InputProps) => {
     const typingState = useAppSelector(state => state.typingSliceReducer.typingState)
     const selectedTime = useAppSelector(state => state.configTestReducer.time)
     const typingSliceActions = typingSlice.actions
     const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        const activeLetter = document.getElementById('active')
-        const textBox = document.getElementById('textBox')
-
-        if (activeLetter && textBox) {
-            if ((textBox.getBoundingClientRect().top + textBox.getBoundingClientRect().height) - (activeLetter.getBoundingClientRect().top + activeLetter.getBoundingClientRect().height) < activeLetter.getBoundingClientRect().height) {
-                let it = 1
-                let s = activeLetter.parentElement?.previousElementSibling
-                while (s && s.previousElementSibling) {
-                    s = s?.previousElementSibling
-                }
-                while (s && s.nextElementSibling && (s.nextElementSibling.getBoundingClientRect().top === s.getBoundingClientRect().top)) {
-                    s = s.nextElementSibling
-                    it++
-                }
-                dispatch(typingSliceActions.generateNewTextPortion(it))
-                debugger
-            }
-        }
-    }, [currLetter]);
 
     const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (typingState === 'notStarted') { // dispatch в store, что мы начали печатать
@@ -43,9 +22,34 @@ export const Input = ({text, typedText, setTypedText, userWord, setUserWord, cur
             dispatch(typingSliceActions.setTime(selectedTime))
         }
         if (e.currentTarget.value[e.currentTarget.value.length - 1] === ' ') {
-            if (e.currentTarget.value.length === 1) return; // If word is empty then we don't start type next word
+            if (e.currentTarget.value.length === 1) return;   // If word is empty then we don't start type next word
 
-            setTypedText([...typedText, '']) //bebe
+            const activeWord = activeWordRef.current
+            // const activeWord = document.getElementById('word_active')
+
+
+            if (activeWord) {
+                const next_word = activeWord.nextElementSibling
+                let first_word = activeWord.previousElementSibling
+                while (first_word && first_word.previousElementSibling) {
+                    first_word = first_word?.previousElementSibling
+                }
+                if (first_word && first_word.getBoundingClientRect().top < activeWord.getBoundingClientRect().top && next_word && (next_word.getBoundingClientRect().top > activeWord.getBoundingClientRect().top)) {
+                    let it = 1
+                    while (first_word && first_word.nextElementSibling && (first_word.nextElementSibling.getBoundingClientRect().top === first_word.getBoundingClientRect().top)) {
+                        first_word = first_word.nextElementSibling
+                        it++
+                    }
+                    setTypedText(typedText.slice(it, typedText.length).concat(['']))
+                    dispatch(typingSliceActions.generateNewTextPortion(it))
+                    setUserWord('')
+                    setCurrLetter(0)
+                    e.currentTarget.value = ''
+                    return
+
+                }
+            }
+            setTypedText([...typedText, ''])
             setUserWord('')
             setCurrLetter(0)
             e.currentTarget.value = ''

@@ -22,7 +22,6 @@ const initialState: TypingSliceType = {
     },
     typedText: null,
     text: (faker.word.words(100)).toLowerCase().split(" ")
-    // text: 'end need much many year old how because better train just like menu other set map group work way school'.split(' ')
 }
 
 export const typingSlice = createSlice({
@@ -46,11 +45,39 @@ export const typingSlice = createSlice({
         },
         setTypedText(state: TypingSliceType, action: PayloadAction<string[]>) {
             state.typedText = action.payload
+            let resultCharacters: CharactersType = {correct: 0, incorrect: 0, missing: 0, extra: 0}
+
+            for (let i = 0; i < action.payload.length; i++) {
+                let currCorrect = 0, currIncorrect = 0
+
+                if (action.payload[i].length > state.text[i].length) {
+                    resultCharacters.extra += action.payload[i].length - state.text[i].length
+                } else if (action.payload[i].length < state.text[i].length) {
+                    resultCharacters.missing += state.text[i].length - action.payload[i].length
+                }
+                for (let j = 0; j < Math.min(action.payload[i].length, state.text[i].length); j++) {
+                    if (state.text[i][j] === action.payload[i][j]) {
+                        currCorrect++
+                    } else {
+                        currIncorrect++
+                    }
+                }
+                resultCharacters.incorrect += currIncorrect ? currIncorrect : 0
+                resultCharacters.correct += !currIncorrect && action.payload[i].length === state.text[i].length ? currCorrect : 0
+
+                if (i !== action.payload.length - 1 && !currIncorrect && action.payload[i].length === state.text[i].length) {
+                    resultCharacters.correct += 1
+                }
+            }
+            state.characters = resultCharacters
+            state.results = {
+                wpm: (resultCharacters.correct * 12) / state.time,
+                accuracy: 0,
+                time: state.time
+            }
         },
         generateNewTextPortion(state: TypingSliceType, action: PayloadAction<number>) {
-            debugger
             state.text = state.text.slice(action.payload, state.text.length).concat(faker.word.words(action.payload).split(' '))
-            debugger
         }
     }
 })

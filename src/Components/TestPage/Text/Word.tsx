@@ -3,7 +3,7 @@ import {colorLetter, WordProps, wordState} from "../../../types/types";
 import styles from "../../../styles/Text.module.css";
 import Letter from "./Letter";
 
-const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLetter}) => {
+const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLetter, activeWordRef}) => {
     console.log("RErender word")
     let wordArray: string[] = expectedWord.split("")
 
@@ -12,13 +12,12 @@ const Word: React.FC<WordProps> = memo(({state, ourWord, expectedWord, indexLett
     }
 
     return (
-        <div className={styles.word}>
+        <div ref={state === wordState.active ? activeWordRef : null} className={styles.word}>
             {
                 wordArray.map((l, i) => {
                     if (i >= expectedWord.length) {
                         return <Letter color={colorLetter.extra_incorrect} letter={l}
                                        isActive={ourWord ? (indexLetter === i + 1) : false} isSpace={false}/>
-
                     }
                     if (state === wordState.active) {
                         return <Letter

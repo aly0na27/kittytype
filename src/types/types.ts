@@ -1,8 +1,11 @@
+import React from "react";
+
 export type WordProps = {
     state: wordState,
     expectedWord: string,
     ourWord: string | null,
     indexLetter: number | null
+    activeWordRef: React.RefObject<HTMLDivElement>
 }
 
 export type LetterProps = {
