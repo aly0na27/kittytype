@@ -14,6 +14,18 @@
     flex-wrap: wrap;
 }
 
+.words.animation {
+    opacity: 0;
+    /*background-color: red;*/
+    animation: ani 0.9s forwards;
+
+}
+@keyframes ani {
+    0% {opacity: 0;}
+    50% {opacity: 0.5}
+    100% {opacity: 1;}
+}
+
 .caret {
     position: absolute;
     width: 0.9em;

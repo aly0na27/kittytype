@@ -11,19 +11,24 @@ import {TimeBar} from "./TimeBar";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {WordCountBar} from "./WordCountBar";
 import {TypingModeType} from "../../../types/types";
-import {testConfigSlice} from "../../../store/reducers/TestConfigSlice";
-
+import {typeTestSlice} from "../../../store/reducers/typeTestSlice";
 
 export const ConfigTest: React.FC = () => {
-    const activeMode = useAppSelector(state => state.configTestReducer.mode)
+    const activeMode = useAppSelector(state => state.typeTestSliceReducer.typeMode)
     const dispatch = useAppDispatch()
-    const setMode = testConfigSlice.actions.setMode
+    const typeTestActions = typeTestSlice.actions
 
     const handleModeClick = (e: React.MouseEvent<HTMLElement>) => {
         const mode = e.currentTarget.innerText as TypingModeType
-        dispatch(setMode(mode))
-    }
 
+        dispatch(typeTestActions.setTypeMode(mode))
+
+        if (mode === 'words') {
+            dispatch(typeTestActions.setValue(10))
+        } else if (mode === 'time') {
+            dispatch(typeTestActions.setValue(15))
+        }
+    }
 
     return (
         <div className={styles.configTestWrapper}>

@@ -1,3 +1,48 @@
 .main {
+    display: flex;
+    flex-direction: row;
     font-size: 20px;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resultBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    /*border: solid 1px var(--secondary-color)*/
+}
+
+.resultBlockWpm, .resultBlockAcc, .resultBlockTestType {
+    display: flex;
+    flex-direction: column;
+}
+
+.wpmHeader, .accHeader {
+    font-size: 1.7rem;
+    font-weight: 500;
+    color: var(--secondary-text-color)
+}
+
+.testTypeHeader {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--secondary-text-color)
+}
+
+.value {
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--secondary-color)
+}
+
+.testTypeValue {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--secondary-color)
+}
+
+.img {
+    width: 50%;
 }

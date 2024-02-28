@@ -1,18 +1,17 @@
 import styles from "../../../styles/TypingMode.module.css";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {testConfigSlice} from "../../../store/reducers/TestConfigSlice";
+import {typeTestSlice} from "../../../store/reducers/typeTestSlice"
 
 export const TimeBar = () => {
     const baseSettings = [15, 30, 60, 120]
 
-    const time = useAppSelector(state => state.configTestReducer.time)
-    const {setTime} = testConfigSlice.actions
+    const time = useAppSelector(state => state.typeTestSliceReducer.value)
+    const setTime = typeTestSlice.actions.setValue
     const dispatch = useAppDispatch()
 
     const handleTimeBarClick = (event: React.MouseEvent<HTMLElement>) => {
-        const time = +event.currentTarget.innerText
-        dispatch(setTime(time))
+        dispatch(setTime(+event.currentTarget.innerText))
     }
 
     return (

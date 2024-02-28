@@ -1,4 +1,14 @@
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
+
+export type TextProps = {
+    text: string[],
+    userWord: string,
+    typedText: string[],
+    currLetter: number,
+    activeWordRef: React.RefObject<HTMLDivElement>,
+    animateFlag: boolean,
+    setAnimateFlag: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 export type WordProps = {
     state: wordState,
@@ -14,6 +24,25 @@ export type LetterProps = {
     isActive: boolean,
     isSpace: boolean
 }
+
+
+export type RestartButtonProps = {
+    setTypedText: React.Dispatch<React.SetStateAction<string[]>>
+    setUserWord: React.Dispatch<React.SetStateAction<string>>
+    setCurrLetter: React.Dispatch<React.SetStateAction<number>>
+    setAnimateFlag: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export type InputProps = {
+    typedText: string[], setTypedText: Dispatch<SetStateAction<string[]>>
+    userWord: string, setUserWord: Dispatch<SetStateAction<string>>
+    currLetter: number, setCurrLetter: Dispatch<SetStateAction<number>>
+    text: string[]
+    activeWordRef: React.RefObject<HTMLDivElement>
+    setUserWordCount: Dispatch<SetStateAction<number>>
+    userWordCount: number
+}
+
 
 export enum wordState {
     expect,

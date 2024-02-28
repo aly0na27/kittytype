@@ -3,3 +3,14 @@
     justify-items: center;
     height: 100%;
 }
+
+.replayButton {
+    border: none;
+    background-color: var(--background-color);
+    color: var(--secondary-color)
+}
+
+.replayButton:hover {
+    cursor: pointer;
+    color: var(--hover-color)
+}
