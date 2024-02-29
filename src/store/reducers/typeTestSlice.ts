@@ -12,6 +12,7 @@ interface TypeTestState {
     initialText: string[]
     slicedText: string[]
     typedText: string[]
+    isFocus: boolean
 }
 
 const initialState: TypeTestState = {
@@ -23,7 +24,8 @@ const initialState: TypeTestState = {
     characters: {correct: 0, incorrect: 0, extra: 0, missing: 0},
     initialText: [],
     slicedText: faker.word.words(100).split(' '),
-    typedText: []
+    typedText: [],
+    isFocus: true
 }
 
 export const typeTestSlice = createSlice({
@@ -60,6 +62,9 @@ export const typeTestSlice = createSlice({
         },
         setSlicedText(state: TypeTestState, action: PayloadAction<string[]>) {
             state.slicedText = action.payload
+        },
+        toggleFocus(state: TypeTestState, action: PayloadAction<boolean>) {
+            state.isFocus = action.payload
         },
         setResult(state: TypeTestState) {
             let resultCharacters: CharactersType = {correct: 0, incorrect: 0, missing: 0, extra: 0}

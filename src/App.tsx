@@ -7,19 +7,28 @@ import {useAppSelector} from "./hooks/redux";
 import {TestPage} from "./Components/TestPage/TestPage";
 import {Footer} from "./Components/Footer/Footer";
 import {ResultPage} from "./Components/ResultPage/ResultPage";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 
 const App: React.FC = () => {
     const typingState = useAppSelector(state => state.typeTestSliceReducer.typingState)
 
+    const onKeyDownHandler = () => {
+        debugger
+    }
+
     return (
         <ThemeProvider theme={theme}>
-            <div className={styles.contentWrapper}>
-                <Header/>
-                {
-                    typingState === 'completed' ? <ResultPage/> : <TestPage/>
-                }
-                <Footer/>
+            <div onKeyDown={onKeyDownHandler} className={styles.contentWrapper}>
+                <BrowserRouter>
+                    <Header/>
+                    <Routes>
+                        {
+                            typingState === 'completed' ?<Route path={'/'} element={<ResultPage/>}/> : <Route path={'/'} element={<TestPage/>}/>
+                        }
+                    </Routes>
+                    <Footer/>
+                </BrowserRouter>
             </div>
         </ThemeProvider>
     )

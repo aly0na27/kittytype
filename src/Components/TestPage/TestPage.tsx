@@ -38,6 +38,11 @@ export const TestPage = () => {
         refreshText()
     }, [typeTestState.typeMode, typeTestState.value]);
 
+    useEffect(() => {
+        if (typeTestState.typingState === 'update') {
+            refreshText()
+        }
+    }, [typeTestState.typingState]);
     return (
         <main className={styles.main}>
             <ConfigTest/>
@@ -54,7 +59,10 @@ export const TestPage = () => {
                    userWordCount={userWordCount} setUserWordCount={setUserWordCount}
             />
             <div>
-                <button className={styles.replayButton} onClick={() => refreshText()}>
+                <button className={styles.replayButton} onClick={() => {
+                    dispatch(typingSliceActions.setTypingState('update'))
+                    refreshText()
+                }}>
                     <ReplayIcon/>
                 </button>
             </div>

@@ -14,7 +14,7 @@ export const Text: React.FC<TextProps> = (props) => {
         if (animateFlag) {
             setTimeout(() => {
                 setAnimateFlag(false)
-            }, 1000)
+            }, 100)
         }
     }, [animateFlag]);
 
