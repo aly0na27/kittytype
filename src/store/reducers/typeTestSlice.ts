@@ -53,8 +53,7 @@ export const typeTestSlice = createSlice({
             }
         },
         generateNewPortionText(state: TypeTestState, action: PayloadAction<number>) {
-            // Check it
-            state.slicedText = state.slicedText.slice(action.payload, state.slicedText.length).concat(faker.word.words(action.payload).split(' '))
+            state.slicedText = state.slicedText.concat(faker.word.words(action.payload).split(' '))
         },
         setTypedText(state: TypeTestState, action: PayloadAction<string[]>) {
             state.typedText = [...state.typedText, ...action.payload]
@@ -62,14 +61,12 @@ export const typeTestSlice = createSlice({
         setSlicedText(state: TypeTestState, action: PayloadAction<string[]>) {
             state.slicedText = action.payload
         },
-        setResult(state: TypeTestState, action: PayloadAction) {
+        setResult(state: TypeTestState) {
             let resultCharacters: CharactersType = {correct: 0, incorrect: 0, missing: 0, extra: 0}
 
-            debugger
             for (let i = 0; i < state.typedText.length; i++) {
                 let currCorrect = 0, currIncorrect = 0
 
-                debugger
                 if (state.typedText[i].length > state.initialText[i].length) {
                     resultCharacters.extra += state.typedText[i].length - state.initialText[i].length
                 } else if (state.typedText[i].length < state.initialText[i].length) {

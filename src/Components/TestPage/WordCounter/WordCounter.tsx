@@ -10,10 +10,6 @@ export const WordCounter = ({userWordCount, text, typedText} : {userWordCount: n
     const typingSliceActions = typeTestSlice.actions
 
     useEffect(() => {
-        let timer = setTimeout(() => {
-            setSeconds(seconds + 1)
-        }, 1000)
-
         if (wordCount === userWordCount) {
             dispatch(typingSliceActions.setTypingState('completed'))
             dispatch(typingSliceActions.setTime(seconds))
@@ -21,6 +17,10 @@ export const WordCounter = ({userWordCount, text, typedText} : {userWordCount: n
             dispatch(typingSliceActions.setTypedText(typedText.slice(0, typedText.length - 1)))
             dispatch(typingSliceActions.setResult())
         }
+
+        let timer = setTimeout(() => {
+            setSeconds(seconds + 0.1)
+        }, 100)
 
         return () => clearTimeout(timer)
     }, [seconds]);

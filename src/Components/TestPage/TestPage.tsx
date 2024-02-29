@@ -31,6 +31,7 @@ export const TestPage = () => {
         setCurrLetter(0)
         setUserWord('')
         setAnimateFlag(true)
+        setUserWordCount(0)
     }
 
     useEffect(() => {

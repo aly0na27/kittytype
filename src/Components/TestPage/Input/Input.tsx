@@ -27,66 +27,67 @@ export const Input = (props: InputProps) => {
 
             const activeWord = activeWordRef.current
 
+            setUserWordCount(userWordCount + 1)
+            setUserWord('')
+            setCurrLetter(0)
+            e.currentTarget.value = ''
+
             if (activeWord) {
                 const next_word = activeWord.nextElementSibling
                 let first_word = activeWord.previousElementSibling
                 let last_word = activeWord.nextElementSibling
+                const textBox = document.getElementById('textBox')
 
+                // Находим самое первое слово
                 while (first_word && first_word.previousElementSibling) {
                     first_word = first_word.previousElementSibling
-                }
-
-                while (last_word && last_word.nextElementSibling) {
-                    last_word = last_word.nextElementSibling
                 }
 
                 if (first_word && first_word.getBoundingClientRect().top < activeWord.getBoundingClientRect().top
                     && next_word && (next_word.getBoundingClientRect().top > activeWord.getBoundingClientRect().top)
                 ) {
-
                     let it = 1
+
+                    // Считаем, сколько слов в первой строке
                     while (first_word && first_word.nextElementSibling && (first_word.nextElementSibling.getBoundingClientRect().top === first_word.getBoundingClientRect().top)) {
                         first_word = first_word.nextElementSibling
                         it++
                     }
 
+                    // Находим самый последний элемент в тексте
+                    while (last_word && last_word.nextElementSibling) {
+                        last_word = last_word.nextElementSibling
+                    }
+
+                    // Если последнее слово находится в видимой части textBox, тогда мы не двигаем наш текст
+                    if (last_word && textBox && last_word.getBoundingClientRect().bottom < textBox.getBoundingClientRect().bottom) {
+                        setTypedText([...typedText, ''])
+                        return
+                    }
+
+                    // Удаляем первую строчку текста
                     setTypedText(typedText.slice(it, typedText.length).concat(['']))
                     dispatch(typingSliceActions.setInitialText(text.slice(0, it)))
                     dispatch(typingSliceActions.setTypedText(typedText.slice(0, it)))
+                    dispatch(typingSliceActions.setSlicedText(typeTestState.slicedText.slice(it, typeTestState.slicedText.length)))
 
-                    if (typeTestState.typeMode === 'words') {
-                        if (typeTestState.value >= 100) {
-                            if (it < typeTestState.value - typeTestState.typedText.length - typedText.length) {
+                    // Если режим печатания слов, то ...
+                    if (typeTestState.typeMode === 'words' && typeTestState.value > 100) {
+                        if (100 < typeTestState.value - typeTestState.typedText.length) {
+                            if (typeTestState.value - 100 - typeTestState.typedText.length >= it) {
                                 dispatch(typingSliceActions.generateNewPortionText(it))
                             } else {
-                                dispatch(typingSliceActions.generateNewPortionText(typeTestState.value - typeTestState.typedText.length - typedText.length))
+                                dispatch(typingSliceActions.generateNewPortionText(typeTestState.value - 100 - typeTestState.typedText.length))
                             }
-                        } else {
-
-                            dispatch(typingSliceActions.setSlicedText(typeTestState.slicedText.slice(it, typeTestState.slicedText.length)))
                         }
-                    } else {
-                        dispatch(typingSliceActions.generateNewPortionText(it))
+                        return
                     }
-
-                    const textBox = document.getElementById('textBox')
-
-                    console.log(last_word?.getBoundingClientRect().height, last_word?.getBoundingClientRect().top, next_word.previousElementSibling?.getBoundingClientRect().top)
-                    debugger
-
-                    setUserWordCount(userWordCount + 1)
-                    setUserWord('')
-                    setCurrLetter(0)
-                    e.currentTarget.value = ''
+                    dispatch(typingSliceActions.generateNewPortionText(it))
                     return
                 }
-            } // Generate new portion of words
+            }
 
-            setUserWordCount(userWordCount + 1)
             setTypedText([...typedText, ''])
-            setUserWord('')
-            setCurrLetter(0)
-            e.currentTarget.value = ''
             return;
         }
 
